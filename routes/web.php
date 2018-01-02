@@ -1,4 +1,5 @@
 <?php
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +31,47 @@ Route::get('/user/{id}',function($id){
 	return "user ".$id;
 });	
 
+// http://localhost:8000/user/10/comment/testvalue
 Route::get('/user/{id}/comment/{comment}',function($id,$comment){
 	return "User ".$id." comment ".$comment;
 });
+
+Route::get('name/{name?}',function($name = "Test"){
+
+	return "Username : ".$name;
+});
+
+Route::get('test/{data}',function($data){
+	return "$data";
+})->where('data','[A-Za-z]+');
+
+
+Route::get('checkuser',function(Request $request){
+
+	return printf( $request->user());
+});
+
+Route::get('user123/{id}', 'UserController@show');
+
+Route::get('role',[
+   'middleware' => 'Role:roletee',
+   'uses' => 'TestController@index',
+]);
+
+Route::get('terminate',[
+   'middleware' => 'terminate',
+   'uses' => 'ABCController@index',
+]);
+
+Route::get('profile', [
+   'middleware' => 'auth',
+   'uses' => 'UserController@showProfile'
+]);
+
+
+Route::get('/usercontroller2/path',[
+   'middleware' => 'First',
+   'uses' => 'UserController2@showPath'
+]);
+
+Route::resource('my','MyController');
